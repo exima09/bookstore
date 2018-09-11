@@ -33,7 +33,7 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
-
+    .autoProvidejQuery()
     // enables Sass/SCSS support
     //.enableSassLoader()
 
@@ -45,6 +45,13 @@ Encore
 
     // REACT
     .enableReactPreset()
+    // .configureBabel(function(babelConfig) {
+    //     // add additional presets
+    //     babelConfig.presets.push('es2017');
+    //
+    //     // no plugins are added by default, but you can add some
+    //     // babelConfig.plugins.push('styled-jsx/babel');
+    // })
 ;
 
 module.exports = Encore.getWebpackConfig();
