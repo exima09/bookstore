@@ -6,24 +6,45 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/book")
+ * @Route("/book", name="book")
  */
 class BookController extends AbstractController
 {
     /**
-     * @Route("/", name="book_index", methods="GET")
+     * @Route("/list", name="book_index", methods="GET")
      * @param BookRepository $bookRepository
      * @return Response
      */
     public function index(BookRepository $bookRepository): Response
     {
-        return $this->render('book/index.html.twig', ['books' => $bookRepository->findAll()]);
+        $books = $bookRepository->findAll();
+        $ar = [];
+
+        foreach($books as $item) {
+            $ar[] = [
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                'author' => $item->getAuthor(),
+                'description' => $item->getDescription(),
+                'image' => $item->getImage(),
+                'onStock' => $item->getOnStock(),
+                'price' => $item->getPrice()
+            ];
+        }
+        return JsonResponse::create([
+            'books' => $ar
+        ]);
+
+        return $this->render('book/index.html.twig', [
+            'books' => $bookRepository->findAll()
+        ]);
     }
 
     /**
@@ -58,7 +79,9 @@ class BookController extends AbstractController
      */
     public function show(Book $book): Response
     {
-        return $this->render('book/show.html.twig', ['book' => $book]);
+        return JsonResponse::create([
+            'test' => $book
+        ]);
     }
 
     /**
