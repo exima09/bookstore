@@ -12,7 +12,7 @@ class BookStoreController extends Controller
 {
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Route("/book/", name="books")
+     * @Route("/books", name="books")
      */
     public function index()
     {

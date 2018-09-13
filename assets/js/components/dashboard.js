@@ -1,9 +1,6 @@
 import React from 'react'
-import { createSelector } from 'reselect'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import bookActions from './action/book'
 
 class Dashboard extends React.Component {
     render() {
@@ -78,25 +75,5 @@ class Dashboard extends React.Component {
 
 }
 
-const getBooks = state => state.book.books
 
-const selector = createSelector(
-    getBooks,
-    books => books,
-);
-
-function mapStateToProps(state) {
-    return {
-        books: selector(state),
-    }
-}
-
-const mapDispatchToProps = {
-    getBooks: bookActions.fetchBooks,
-}
-
-Dashboard.propTypes = {
-    getBooks: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect()(Dashboard)
