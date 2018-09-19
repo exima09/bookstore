@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,6 +19,27 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BookController extends AbstractController
 {
+    /**
+     * @var BookRepository
+     */
+    private $bookRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * BookController constructor.
+     * @param BookRepository $bookRepository
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
+        $this->bookRepository = $bookRepository;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/list", name="book_index", methods="GET")
      * @param BookRepository $bookRepository
@@ -41,46 +64,52 @@ class BookController extends AbstractController
         return JsonResponse::create([
             'books' => $ar
         ]);
-
-        return $this->render('book/index.html.twig', [
-            'books' => $bookRepository->findAll()
-        ]);
     }
 
     /**
-     * @Route("/new", name="book_new", methods="GET|POST")
+     * @Route("/add", name="book_new")
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function add(Request $request): Response
     {
-        $book = new Book();
-        $form = $this->createForm(BookType::class, $book);
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($book);
-            $em->flush();
 
-            return $this->redirectToRoute('book_index');
-        }
-
-        return $this->render('book/new.html.twig', [
-            'book' => $book,
-            'form' => $form->createView(),
+       $book = new Book(
+            $data['name'],
+            $data['author'],
+            $data['description'],
+            $data['onStock'],
+            $data['image'],
+            $data['price']
+       );
+       $this->entityManager->persist($book);
+       $this->entityManager->flush();
+        return JsonResponse::create([
+            'message' => "dodane"
         ]);
     }
 
     /**
      * @Route("/{id}", name="book_show", methods="GET")
-     * @param Book $book
+     * @param int $id
      * @return Response
      */
-    public function show(Book $book): Response
+    public function show(int $id): Response
     {
+        $book = $this->bookRepository->find($id);
+        $json = [
+            'id' => $book->getId(),
+            'name' => $book->getName(),
+            'author' => $book->getAuthor(),
+            'description' => $book->getDescription(),
+            'image' => $book->getImage(),
+            'onStock' => $book->getOnStock(),
+            'price' => $book->getPrice()
+        ];
         return JsonResponse::create([
-            'test' => $book
+            'book' => $json
         ]);
     }
 
@@ -108,19 +137,20 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_delete", methods="DELETE")
+     * @Route("/delete", name="book_delete", methods="POST|HEAD")
      * @param Request $request
-     * @param Book $book
      * @return Response
      */
-    public function delete(Request $request, Book $book): Response
+    public function delete(Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($book);
-            $em->flush();
-        }
+        $data = json_decode($request->getContent(), true);
+        $book = $this->bookRepository->find($data['idDelete']);
 
-        return $this->redirectToRoute('book_index');
+        $this->entityManager->remove($book);
+        $this->entityManager->flush();
+
+        return JsonResponse::create([
+            'message' => "usuniete"
+        ]);
     }
 }

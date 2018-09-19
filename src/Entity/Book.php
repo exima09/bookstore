@@ -47,6 +47,25 @@ class Book
     private $price;
 
     /**
+     * Book constructor.
+     * @param $name
+     * @param $author
+     * @param $description
+     * @param $onStock
+     * @param $image
+     * @param $price
+     */
+    public function __construct($name, $author, $description, $onStock, $image, $price)
+    {
+        $this->name = $name;
+        $this->author = $author;
+        $this->description = $description;
+        $this->onStock = $onStock;
+        $this->image = $image;
+        $this->price = $price;
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int

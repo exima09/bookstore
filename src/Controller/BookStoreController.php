@@ -13,6 +13,8 @@ class BookStoreController extends Controller
     /**
      * @Route("/dashboard", name="dashboard")
      * @Route("/books", name="books")
+     * @Route("/books/add", name="books_add")
+     * @Route("/books/show/{id}", name="books_show")
      */
     public function index()
     {

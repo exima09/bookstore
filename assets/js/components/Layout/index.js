@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import BooksList from '../book/bookList'
+import BooksAdd from '../book/bookAdd'
 import Navbar from './navbar'
 import Dashboard from '../dashboard'
 
@@ -20,7 +21,10 @@ class Main extends React.Component {
                         <main role="main" className={'col-md-9 col-lg-2 ml-sm-auto col-lg-10 pt-3 px-4'}>
                             <Switch>
                                 <Route exact path="/dashboard" component={Dashboard} />
+                                <Route path="/books/add" component={BooksAdd}/>
+                                <Route path="/books/show/:bookId" component={BooksList}/>
                                 <Route path="/books" component={BooksList}/>
+
                             </Switch>
                         </main>
                     </div>

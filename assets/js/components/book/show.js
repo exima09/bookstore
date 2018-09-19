@@ -1,10 +1,30 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
+import {get, post} from "../utils/requests";
 
 export default class Show extends React.Component {
     constructor(props) {
         super(props);
+
     }
+
+    removeBook(idDel) {
+        console.log('props', idDel);
+        post('/book/delete', {
+            idDelete: idDel
+        })
+        .then(res => {
+            console.log('RES',res);
+            console.log('RES_DATA',res.data);
+            this.props.componentDidMount();
+        })
+    }
+
     render() {
+        if(this.props.book === undefined)
+        {
+            return (<div className="error">Brak książki</div>)
+        }
         return (
             <div key={this.props.book.id} className="row bookView">
                 <div className="col-sm-4">
@@ -19,9 +39,17 @@ export default class Show extends React.Component {
                     <b><i>{this.props.book.price} EG</i></b>
                 </div>
                 <div className="col-sm-4">
-                    <button className="btn btn-primary" onClick={() => this.props.addToOrder(this.props.book)}>Add to
-                        Order
-                    </button>
+                    <div className="btn-group" role="group" aria-label="Action button">
+                        <button className="btn btn-light" onClick={() => this.props.addToOrder(this.props.book)}>Add to Order</button>
+                        {this.props.match.path !== "/books/show/:bookId" &&
+                            <Link className="btn btn-light" to={`/books/show/${this.props.book.id}`}>Show</Link>
+                        }
+                        {this.props.match.path === "/books/show/:bookId" &&
+                            <Link className="btn btn-light" to={'/books'}>Back</Link>
+                        }
+                        <button className="btn btn-light">Edit</button>
+                        <button className="btn btn-light" onClick={(event) => this.removeBook(this.props.book.id)}>Delete</button>
+                    </div>
                 </div>
             </div>
         )
