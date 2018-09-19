@@ -15,6 +15,7 @@ class BookStoreController extends Controller
      * @Route("/books", name="books")
      * @Route("/books/add", name="books_add")
      * @Route("/books/show/{id}", name="books_show")
+     * @Route("/books/edit/{id}", name="books_edit")
      */
     public function index()
     {

@@ -4,6 +4,7 @@ import BooksList from '../book/bookList'
 import BooksAdd from '../book/bookAdd'
 import Navbar from './navbar'
 import Dashboard from '../dashboard'
+import BookEdit from '../book/bookEdit'
 
 class Main extends React.Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class Main extends React.Component {
                                 <Route exact path="/dashboard" component={Dashboard} />
                                 <Route path="/books/add" component={BooksAdd}/>
                                 <Route path="/books/show/:bookId" component={BooksList}/>
+                                <Route path="/books/edit/:bookId" component={BookEdit}/>
                                 <Route path="/books" component={BooksList}/>
 
                             </Switch>

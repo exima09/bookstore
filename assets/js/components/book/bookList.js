@@ -1,6 +1,7 @@
 import React from 'react';
-import BookView from './show'
+import BookView from './bookView'
 import {get} from '../utils/requests'
+import {deleteBook} from '../action/book'
 
 export default class BooksList extends React.Component {
 
@@ -21,6 +22,21 @@ export default class BooksList extends React.Component {
         });
     }
 
+    onDelete(id) {
+        deleteBook(id)
+            .then((data) => {
+                let books = this.state.books.filter((book) => {
+                    return id !== book.id;
+                });
+                this.setState(state => {
+                    state.books = books;
+                    return state;
+                });
+            })
+            .catch((err) => {
+                console.error('err', err);
+            });
+    }
 
 
     componentWillUnmount() {
@@ -36,7 +52,7 @@ export default class BooksList extends React.Component {
         }
         const bookListing = this.state.books.map(book => {
             if (book.onStock === true) {
-                return <BookView book={book} match={this.props.match} componentDidMount={this.componentDidMount}/>
+                return <BookView book={book} match={this.props.match} onDelete={this.onDelete.bind(this)}/>
             }
         });
         return (

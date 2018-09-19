@@ -1,24 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
-import {get, post} from "../utils/requests";
 
-export default class Show extends React.Component {
+export default class BookView extends React.Component {
     constructor(props) {
         super(props);
 
     }
 
-    removeBook(idDel) {
-        console.log('props', idDel);
-        post('/book/delete', {
-            idDelete: idDel
-        })
-        .then(res => {
-            console.log('RES',res);
-            console.log('RES_DATA',res.data);
-            this.props.componentDidMount();
-        })
-    }
+    deleteHandler(i) {
+        this.props.onDelete(i);
+    };
 
     render() {
         if(this.props.book === undefined)
@@ -48,7 +39,7 @@ export default class Show extends React.Component {
                             <Link className="btn btn-light" to={'/books'}>Back</Link>
                         }
                         <button className="btn btn-light">Edit</button>
-                        <button className="btn btn-light" onClick={(event) => this.removeBook(this.props.book.id)}>Delete</button>
+                        <button className="btn btn-light" onClick={() => this.deleteHandler(this.props.book.id)}>Delete</button>
                     </div>
                 </div>
             </div>

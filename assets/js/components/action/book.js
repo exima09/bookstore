@@ -1,25 +1,35 @@
-import { get } from '../utils/requests'
-import types from '../actionType/book'
+import {get, post} from '../utils/requests'
 
-function fetchCharacters() {
-    return dispatch => get('/api/characters?noLimit')
-        .then((response) => {
-            dispatch({
-                type: types.CHARACTER_LIST,
-                payload: response.data.data,
-            })
-        })
+function deleteBook(id) {
+    return post('/book/delete', {
+        idDelete: id
+    })
+    .then(res => {
+        console.log('RES',res);
+        console.log('RES_DATA',res.data);
+    })
+    .catch(err => {
+        console.log('ERROR DELETE',err);
+    });
 }
 
-function filterCharacters(phrase) {
-    return dispatch =>
-        dispatch({
-            type: types.FILTER_CHARACTER,
-            payload: phrase,
-        })
+function editBook(id) {
+    return get('/book/'+id, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .catch(err => err);
 }
 
-export default {
-    fetchCharacters,
-    filterCharacters,
+function fetchBook(id) {
+    return get('/book/'+id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.data)
+    .catch(err => err);
+
 }
+export {deleteBook, editBook, fetchBook}
