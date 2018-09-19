@@ -13,12 +13,20 @@ function deleteBook(id) {
     });
 }
 
-function editBook(id) {
-    return get('/book/'+id, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(err => err);
+function editBook(id, data) {
+    return (
+        post('/book/edit/'+id, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log('RES',res);
+            console.log('RES_DATA',res.data);
+        }).catch(err => err)
+    )
 }
 
 function fetchBook(id) {

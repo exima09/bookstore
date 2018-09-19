@@ -38,7 +38,7 @@ export default class BookView extends React.Component {
                         {this.props.match.path === "/books/show/:bookId" &&
                             <Link className="btn btn-light" to={'/books'}>Back</Link>
                         }
-                        <button className="btn btn-light">Edit</button>
+                        <Link className="btn btn-light" to={`/books/edit/${this.props.book.id}`}>Edit</Link>
                         <button className="btn btn-light" onClick={() => this.deleteHandler(this.props.book.id)}>Delete</button>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import Form from '../Form/bookForm';
-import { fetchBook, editBook } from '../action/book';
+import { fetchBook } from '../action/book';
 
 export default class BookEdit extends React.Component {
 
@@ -26,16 +26,12 @@ export default class BookEdit extends React.Component {
 
     }
 
-    handleSubmit(data) {
-        editBook(this.state.book.id, data);
-    }
-
     render() {
         return (
             <div>
                 <Form onSubmit={this.handleSubmit}
-                      name={this.state.book.name}
-                      author={this.state.book.author}/>
+                      book={this.state.book}
+                      history={this.props.history}/>
             </div>
         );
     }

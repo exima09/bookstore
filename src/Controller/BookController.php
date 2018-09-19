@@ -114,25 +114,27 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="book_edit", methods="GET|POST")
+     * @Route("/edit/{id}", name="book_edit", methods="GET|POST")
      * @param Request $request
-     * @param Book $book
      * @return Response
      */
-    public function edit(Request $request, Book $book): Response
+    public function edit(Request $request): Response
     {
-        $form = $this->createForm(BookType::class, $book);
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
+        $data = $data['body'];
+        $data = json_decode($data, true);
+        $book = $this->bookRepository->find($data['id']);
+        $book->setName($data['name']);
+        $book->setAuthor($data['author']);
+        $book->setDescription($data['description']);
+        $book->setOnStock($data['onStock']);
+        $book->setImage($data['image']);
+        $book->setPrice($data['price']);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('book_edit', ['id' => $book->getId()]);
-        }
-
-        return $this->render('book/edit.html.twig', [
-            'book' => $book,
-            'form' => $form->createView(),
+        $this->entityManager->persist($book);
+        $this->entityManager->flush();
+        return JsonResponse::create([
+            'message' => "zedytowano"
         ]);
     }
 
