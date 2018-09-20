@@ -8,7 +8,9 @@ export default class BooksList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            books: []
+            books: [],
+            orders: [],
+            cost: 0
         }
     }
 
@@ -37,6 +39,12 @@ export default class BooksList extends React.Component {
                 console.error('err', err);
             });
     }
+    addToOrder = (book) =>{
+        this.setState({
+            orders: [...this.state.orders, book],
+            cost: this.state.cost+book.price
+        })
+    }
 
 
     componentWillUnmount() {
@@ -52,12 +60,18 @@ export default class BooksList extends React.Component {
         }
         const bookListing = this.state.books.map(book => {
             if (book.onStock === true) {
-                return <BookView book={book} match={this.props.match} onDelete={this.onDelete.bind(this)}/>
+                return <BookView
+                    book={book}
+                    match={this.props.match}
+                    onDelete={this.onDelete.bind(this)}
+                    // addToOrder={this.addToOrder(book)}
+                />
             }
         });
         return (
             <div className="row">
                 <div className="col-sm-5">
+                    {this.state.cost}
                  </div>
                 <div className="col-sm-6">
                 {bookListing}
