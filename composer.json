@@ -6,6 +6,9 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "friendsofsymfony/rest-bundle": "^2.4",
+        "lcobucci/jwt": "^3.2",
+        "lexik/jwt-authentication-bundle": "^2.5",
+        "namshi/jose": "^7.2",
         "nelmio/api-doc-bundle": "^3.3",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "*",
@@ -29,7 +32,14 @@
         "symfony/dotenv": "*",
         "symfony/maker-bundle": "^1.7",
         "symfony/profiler-pack": "^1.0",
-        "symfony/web-server-bundle": "*"
+        "symfony/web-server-bundle": "*",
+        "symfony/phpunit-bridge": "^3.4|^4.0",
+        "symfony/browser-kit": "^3.4|^4.0",
+        "symfony/console": "^3.4|^4.0",
+        "symfony/dom-crawler": "^3.4|^4.0",
+        "symfony/var-dumper": "^3.4|^4.0",
+        "symfony/yaml": "^3.4|^4.0",
+        "friendsofphp/php-cs-fixer": "^1.1|^2.8"
     },
     "config": {
         "preferred-install": {
@@ -65,6 +75,13 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "test": [
+            "vendor/bin/simple-phpunit",
+            "ENCODER=lcobucci vendor/bin/simple-phpunit",
+            "ENCODER=lcobucci ALGORITHM=HS256 vendor/bin/simple-phpunit",
+            "ENCODER=user_id_claim vendor/bin/simple-phpunit",
+            "PROVIDER=lexik_jwt vendor/bin/simple-phpunit"
         ]
     },
     "conflict": {
