@@ -28,6 +28,9 @@ class HomePage extends React.Component {
                     </ul>
                 }
                 <p>
+                    <Link to="/books">Books</Link>
+                </p>
+                <p>
                     <Link to="/login">Logout</Link>
                 </p>
             </div>

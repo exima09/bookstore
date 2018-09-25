@@ -22,6 +22,7 @@ class BookStoreController extends Controller
      */
     public function index()
     {
+        die("A");
         // replace this line with your own code!
         return $this->render('react.html.twig', [
         ]);

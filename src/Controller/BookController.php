@@ -92,7 +92,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_show", methods="GET")
+     * @Route("/book/{id}", name="book_show", methods="GET")
      * @param int $id
      * @return Response
      */

@@ -7,7 +7,8 @@ import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
-import BooksAdd from "../components/book/bookAdd";
+import { BookList } from '../BookList';
+//import BooksAdd from "../components/book/bookAdd";
 import BooksList from "../components/book/bookList";
 import BookEdit from "../components/book/bookEdit";
 
@@ -35,10 +36,10 @@ class App extends React.Component {
                             <div>
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <Route path="/login" component={LoginPage} />
-                                <Route path="/books/add" component={BooksAdd}/>
+                                {/*<Route path="/books/add" component={BooksAdd}/>
                                 <Route path="/books/show/:bookId" component={BooksList}/>
-                                <Route path="/books/edit/:bookId" component={BookEdit}/>
-                                <PrivateRoute path="/books" component={BooksList}/>
+                                <Route path="/books/edit/:bookId" component={BookEdit}/>*/}
+                                <Route path="/books" component={BookList}/>
                             </div>
                         </Router>
                     </div>
